@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Dunning feature.
+ */
+
+include_once 'dunning.features.inc';
