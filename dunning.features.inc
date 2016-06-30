@@ -12,6 +12,52 @@ function dunning_views_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_flag_default_flags().
+ */
+function dunning_flag_default_flags() {
+  $flags = array();
+  // Exported flag: "Bezahlt?".
+  $flags['bezahlt_'] = array(
+    'entity_type' => 'commerce_order',
+    'title' => 'Bezahlt?',
+    'global' => 1,
+    'types' => array(
+      0 => 'commerce_order',
+    ),
+    'flag_short' => 'Als bezahlt markieren',
+    'flag_long' => '',
+    'flag_message' => 'bezahlt',
+    'unflag_short' => 'Als unbezahlt markieren',
+    'unflag_long' => 'unbezahlt',
+    'unflag_message' => '',
+    'unflag_denied_text' => '',
+    'link_type' => 'toggle',
+    'weight' => 0,
+    'show_in_links' => array(
+      'administrator' => 0,
+      'customer' => 0,
+      'backoffice' => 0,
+      'pdf' => 0,
+      'canceled' => 0,
+      'checkout_pane' => 0,
+      'diff_standard' => 0,
+      'token' => 0,
+    ),
+    'show_as_field' => 1,
+    'show_on_form' => 0,
+    'access_author' => '',
+    'show_contextual_link' => 0,
+    'module' => 'dunning',
+    'locked' => array(
+      0 => 'name',
+    ),
+    'api_version' => 3,
+  );
+  return $flags;
+
+}
+
+/**
  * Implements hook_default_pet().
  */
 function dunning_default_pet() {
