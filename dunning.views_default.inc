@@ -1204,7 +1204,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['nothing']['label'] = 'Bankbeleg';
   $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
   /* Field: Commerce Order: Bankbeleg (editable) */
-  $handler->display->display_options['fields']['field_bankbeleg_editable']['id'] = 'field_bankbeleg_editable';
+  /*$handler->display->display_options['fields']['field_bankbeleg_editable']['id'] = 'field_bankbeleg_editable';
   $handler->display->display_options['fields']['field_bankbeleg_editable']['table'] = 'field_data_field_bankbeleg';
   $handler->display->display_options['fields']['field_bankbeleg_editable']['field'] = 'field_bankbeleg_editable';
   $handler->display->display_options['fields']['field_bankbeleg_editable']['label'] = 'Bankbeleg';
@@ -1216,7 +1216,7 @@ function dunning_views_default_views() {
   );
   $handler->display->display_options['fields']['field_bankbeleg_editable']['widget_type'] = '0';
   $handler->display->display_options['fields']['field_bankbeleg_editable']['suppress_label'] = 0;
-  $handler->display->display_options['fields']['field_bankbeleg_editable']['suppress_description'] = 0;
+  $handler->display->display_options['fields']['field_bankbeleg_editable']['suppress_description'] = 0;*/
   /* Field: Rechnungsdatum zur Sortierung */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
