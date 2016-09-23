@@ -6,6 +6,7 @@ version = 7.x-1.0-alpha3
 dependencies[] = commerce_backoffice_order
 dependencies[] = commerce_custom_order_status
 dependencies[] = commerce_order
+dependencies[] = commerce_pet
 dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = features

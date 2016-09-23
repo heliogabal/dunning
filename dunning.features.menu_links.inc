@@ -66,7 +66,6 @@ function dunning_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -49,
     'customized' => 1,
-    'parent_identifier' => 'menu-buchhaltungsmenu_:admin/buchhaltung/zahlungen',
   );
   // Exported menu link: menu-buchhaltungsmenu_offene-rechnungen:admin/buchhaltung/zahlungen.
   $menu_links['menu-buchhaltungsmenu_offene-rechnungen:admin/buchhaltung/zahlungen'] = array(
@@ -95,7 +94,6 @@ function dunning_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -50,
     'customized' => 1,
-    'parent_identifier' => 'menu-buchhaltungsmenu_:admin/buchhaltung/zahlungen',
   );
 
   // Translatables
