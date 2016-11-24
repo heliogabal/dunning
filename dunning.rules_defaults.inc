@@ -22,8 +22,6 @@ function dunning_default_rules_configuration() {
         { "data_is" : { "data" : [ "bestellung:status" ], "value" : "invoiced" } }
       ],
       "DO" : [
-        { "data_set" : { "data" : [ "bestellung:status" ], "value" : "mahnung_1" } },
-        { "entity_save" : { "data" : [ "bestellung" ] } },
         { "commerce_pet_action_send_pet" : {
             "pet_name" : "1_mahnung",
             "to_text" : "[bestellung:mail]",
@@ -31,7 +29,9 @@ function dunning_default_rules_configuration() {
             "account_subs" : [ "bestellung:owner" ],
             "entity_subs" : [ "bestellung" ]
           }
-        }
+        },
+        { "data_set" : { "data" : [ "bestellung:status" ], "value" : "mahnung_1" } },
+        { "entity_save" : { "data" : [ "bestellung" ] } }
       ]
     }
   }');
@@ -40,7 +40,7 @@ function dunning_default_rules_configuration() {
       "PLUGIN" : "rule",
       "OWNER" : "rules",
       "TAGS" : [ "inkota" ],
-      "REQUIRES" : [ "rules", "pet" ],
+      "REQUIRES" : [ "rules", "commerce_pet" ],
       "ACCESS_EXPOSED" : "1",
       "USES VARIABLES" : { "bestellung" : { "label" : "bestellung", "type" : "commerce_order" } },
       "IF" : [
@@ -48,12 +48,12 @@ function dunning_default_rules_configuration() {
         { "data_is" : { "data" : [ "bestellung:status" ], "value" : "mahnung_1" } }
       ],
       "DO" : [
-        { "pet_action_send_pet" : {
+        { "commerce_pet_action_send_pet" : {
             "pet_name" : "_cloned",
             "to_text" : "[bestellung:mail]",
             "to_account" : [ "" ],
             "account_subs" : [ "bestellung:owner" ],
-            "node_subs" : [ "" ]
+            "entity_subs" : [ "bestellung" ]
           }
         },
         { "data_set" : { "data" : [ "bestellung:status" ], "value" : "mahnung_2" } },
