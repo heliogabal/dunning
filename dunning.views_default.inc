@@ -31,6 +31,8 @@ function dunning_views_default_views() {
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
+  $handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
@@ -123,6 +125,10 @@ function dunning_views_default_views() {
     ),
   );
   $handler->display->display_options['style_options']['sticky'] = TRUE;
+  /* Verhalten, wenn keine Ergebnisse vorliegen: Global: Textbereich */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
   /* Beziehung: Bestellung: Referenziertes Kundenprofil */
   $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['id'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['table'] = 'field_data_commerce_customer_billing';
@@ -319,7 +325,7 @@ function dunning_views_default_views() {
   );
 
   /* Display: Offene Rechnungen */
-  $handler = $view->new_display('page', 'Offene Rechnungen', 'page_1');
+  $handler = $view->new_display('page', 'Offene Rechnungen', 'offene_rechnungen');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Offene Rechnungen';
   $handler->display->display_options['display_description'] = 'In dieser Ansicht werden gestellte Rechnungen angezeigt, die mit Zahlungen abgeglichen werden können.';
@@ -573,7 +579,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['tab_options']['name'] = 'menu-buchhaltungsmenu';
 
   /* Display: Mahnungen */
-  $handler = $view->new_display('page', 'Mahnungen', 'page_2');
+  $handler = $view->new_display('page', 'Mahnungen', 'mahnungen');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Mahnungen';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
@@ -670,6 +676,15 @@ function dunning_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* Verhalten, wenn keine Ergebnisse vorliegen: Global: Textbereich */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'Keine Einträge vorhanden';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = '<h2>Bravo! Momentan gibt es keine unbezahlten Rechnungen, die überfällig wären!</h2>';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Feld: Stapelverarbeitungen: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -912,8 +927,8 @@ function dunning_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Data export */
-  $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
+  /* Display: Datenexport */
+  $handler = $view->new_display('views_data_export', 'Datenexport', 'datenexport');
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
@@ -1054,7 +1069,7 @@ function dunning_views_default_views() {
   );
 
   /* Display: Bezahlte Rechnungen */
-  $handler = $view->new_display('page', 'Bezahlte Rechnungen', 'page_3');
+  $handler = $view->new_display('page', 'Bezahlte Rechnungen', 'bezahlte_rechnungen');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Bezahlte Rechnungen';
   $handler->display->display_options['display_description'] = 'In dieser Ansicht werden bezahlte Rechnungen angezeigt.';
@@ -1381,11 +1396,13 @@ function dunning_views_default_views() {
     t('In dieser Ansicht werden gestellte Rechnungen angezeigt, die mit Zahlungen abgeglichen werden können.'),
     t('Südlink Anteil brutto'),
     t('Mahnungen'),
+    t('Keine Einträge vorhanden'),
+    t('<h2>Bravo! Momentan gibt es keine unbezahlten Rechnungen, die überfällig wären!</h2>'),
     t('Mahnungen verschicken'),
     t('E-Mail'),
     t('Status'),
     t('Rechnungsdatum (field_commerce_billy_i_date)'),
-    t('Data export'),
+    t('Datenexport'),
     t('Spendenbetrag'),
     t('Bezahlte Rechnungen'),
     t('In dieser Ansicht werden bezahlte Rechnungen angezeigt.'),
