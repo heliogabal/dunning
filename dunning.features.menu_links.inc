@@ -49,12 +49,13 @@ function dunning_menu_default_menu_links() {
       'identifier' => 'menu-buchhaltungsmenu_mahnungen:admin/buchhaltung/mahnungen',
     ),
     'module' => 'menu',
-    'hidden' => 1,
+    'hidden' => 0,
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
     'weight' => -49,
     'customized' => 1,
+    'parent_identifier' => 'menu-buchhaltungsmenu_buchhaltung:admin/buchhaltung',
   );
   // Exported menu link: menu-buchhaltungsmenu_offene-rechnungen:admin/buchhaltung/zahlungen.
   $menu_links['menu-buchhaltungsmenu_offene-rechnungen:admin/buchhaltung/zahlungen'] = array(
@@ -77,12 +78,13 @@ function dunning_menu_default_menu_links() {
       'identifier' => 'menu-buchhaltungsmenu_offene-rechnungen:admin/buchhaltung/zahlungen',
     ),
     'module' => 'menu',
-    'hidden' => 1,
+    'hidden' => 0,
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
     'weight' => -50,
     'customized' => 1,
+    'parent_identifier' => 'menu-buchhaltungsmenu_buchhaltung:admin/buchhaltung',
   );
 
   // Translatables
