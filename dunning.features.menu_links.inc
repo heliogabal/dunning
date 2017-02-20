@@ -16,9 +16,9 @@ function dunning_menu_default_menu_links() {
     'link_path' => 'admin/buchhaltung/rechnungsarchiv',
     'router_path' => 'admin/buchhaltung/rechnungsarchiv',
     'link_title' => 'Bezahlte Rechnungen',
-//    'options' => array(
-//      'identifier' => 'menu-buchhaltungsmenu_bezahlte-rechnungen:admin/buchhaltung/rechnungsarchiv',
-//    ),
+    'options' => array(
+      'identifier' => 'menu-buchhaltungsmenu_bezahlte-rechnungen:admin/buchhaltung/rechnungsarchiv',
+    ),
     'module' => 'system',
     'hidden' => -1,
     'external' => 0,
