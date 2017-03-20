@@ -32,6 +32,7 @@ function dunning_views_default_views() {
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
@@ -129,24 +130,17 @@ function dunning_views_default_views() {
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  /* Relationship: Bestellung: Referenced customer profile */
+  /* Relationship: Commerce Order: Referenced customer profile */
   $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['id'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['table'] = 'field_data_commerce_customer_billing';
   $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['field'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['required'] = TRUE;
-  /* Relationship: Flags: bezahlt_ */
-  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'commerce_order';
-  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['label'] = 'Bezahlt';
-  $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
-  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'bezahlt_';
-  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
-  /* Relationship: Bestellung: Referenced line items */
+  /* Relationship: Commerce Order: Referenced line items */
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['id'] = 'commerce_line_items_line_item_id';
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['field'] = 'commerce_line_items_line_item_id';
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['label'] = 'Line items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['required'] = TRUE;
   /* Field: Bulk operations: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'commerce_order';
@@ -172,13 +166,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -194,7 +188,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -214,7 +208,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -228,15 +222,6 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
@@ -258,10 +243,17 @@ function dunning_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Field: Bestellung: Line items */
-  $handler->display->display_options['fields']['commerce_line_items']['id'] = 'commerce_line_items';
-  $handler->display->display_options['fields']['commerce_line_items']['table'] = 'field_data_commerce_line_items';
-  $handler->display->display_options['fields']['commerce_line_items']['field'] = 'commerce_line_items';
+  /* Field: Commerce Line item: Spendenbetrag */
+  $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
+  $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
+  $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
+  $handler->display->display_options['fields']['commerce_donate_amount']['relationship'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['fields']['commerce_donate_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => '.',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
   /* Filter criterion: Commerce Order: Order type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'commerce_order';
@@ -322,7 +314,7 @@ function dunning_views_default_views() {
     'commerce_customer_address_name_line' => 'commerce_customer_address_name_line',
     'commerce_order_total' => 'commerce_order_total',
   );
-  /* Filter criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Filter criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -332,13 +324,14 @@ function dunning_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Offene Rechnungen';
   $handler->display->display_options['display_description'] = 'In dieser Ansicht werden gestellte Rechnungen angezeigt, die mit Zahlungen abgeglichen werden können.';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['grouping'] = array(
     0 => array(
-      'field' => 'field_commerce_billy_i_date_2',
+      'field' => 'field_commerce_billy_i_date_1',
       'rendered' => 1,
-      'rendered_strip' => 1,
+      'rendered_strip' => 0,
     ),
   );
   $handler->display->display_options['style_options']['columns'] = array(
@@ -352,15 +345,19 @@ function dunning_views_default_views() {
     'status' => 'status',
     'field_commerce_billy_i_date_1' => 'field_commerce_billy_i_date_1',
     'flagged' => 'flagged',
-    'nothing' => 'nothing',
+    'commerce_line_items_1' => 'commerce_line_items_1',
+    'commerce_line_items' => 'commerce_line_items',
+    'commerce_donate_amount' => 'commerce_donate_amount',
+    'commerce_line_items_2' => 'commerce_line_items_2',
     'field_commerce_billy_i_date_2' => 'field_commerce_billy_i_date_2',
+    'field_commerce_order_bankbeleg_editable' => 'field_commerce_order_bankbeleg_editable',
   );
   $handler->display->display_options['style_options']['default'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['style_options']['info'] = array(
     'views_bulk_operations' => array(
       'align' => '',
       'separator' => '',
-      'empty_column' => 0,
+      'empty_column' => 1,
     ),
     'order_number' => array(
       'sortable' => 0,
@@ -421,12 +418,36 @@ function dunning_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'nothing' => array(
+    'commerce_line_items_1' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'commerce_line_items' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'commerce_donate_amount' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'commerce_line_items_2' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_commerce_billy_i_date_2' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_commerce_order_bankbeleg_editable' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -443,7 +464,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '<none>';
+  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '1';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 0;
@@ -464,13 +485,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -487,7 +508,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -496,21 +517,12 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
     'calculation' => FALSE,
   );
-  /* Field: Commerce Order: Order ID */
-  $handler->display->display_options['fields']['order_id']['id'] = 'order_id';
-  $handler->display->display_options['fields']['order_id']['table'] = 'commerce_order';
-  $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
-  $handler->display->display_options['fields']['order_id']['label'] = 'Bestellnummer';
-  $handler->display->display_options['fields']['order_id']['exclude'] = TRUE;
-  /* Field: Commerce Order: Order status */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Datum zur Sortierung */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['group_type'] = 'count_distinct';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['ui_name'] = 'Datum zur Sortierung';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['label'] = '';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['element_label_colon'] = FALSE;
@@ -520,26 +532,9 @@ function dunning_views_default_views() {
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
+    'show_remaining_days' => 0,
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
-  /* Field: Bestellung: Line items */
-  $handler->display->display_options['fields']['commerce_line_items_1']['id'] = 'commerce_line_items_1';
-  $handler->display->display_options['fields']['commerce_line_items_1']['table'] = 'field_data_commerce_line_items';
-  $handler->display->display_options['fields']['commerce_line_items_1']['field'] = 'commerce_line_items';
-  $handler->display->display_options['fields']['commerce_line_items_1']['label'] = 'Bildungsm. Anteil';
-  $handler->display->display_options['fields']['commerce_line_items_1']['settings'] = array(
-    'view' => 'commerce_line_item_table|block_2',
-  );
-  $handler->display->display_options['fields']['commerce_line_items_1']['delta_offset'] = '0';
-  /* Field: Bestellung: Line items */
+  /* Field: Commerce Order: Line items */
   $handler->display->display_options['fields']['commerce_line_items']['id'] = 'commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items']['field'] = 'commerce_line_items';
@@ -548,58 +543,51 @@ function dunning_views_default_views() {
     'view' => 'commerce_line_item_table|block_1',
   );
   $handler->display->display_options['fields']['commerce_line_items']['delta_offset'] = '0';
-  /* Field: Commerce Belegzeile: Spendenbetrag */
-  $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['relationship'] = 'commerce_line_items_line_item_id';
-  $handler->display->display_options['fields']['commerce_donate_amount']['label'] = 'Spende';
-  $handler->display->display_options['fields']['commerce_donate_amount']['settings'] = array(
-    'thousand_separator' => '',
-    'decimal_separator' => ',',
-    'scale' => '2',
-    'prefix_suffix' => 1,
+  /* Field: Commerce Order: Line items */
+  $handler->display->display_options['fields']['commerce_line_items_1']['id'] = 'commerce_line_items_1';
+  $handler->display->display_options['fields']['commerce_line_items_1']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_1']['field'] = 'commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_1']['label'] = 'Bildungsm. Anteil';
+  $handler->display->display_options['fields']['commerce_line_items_1']['settings'] = array(
+    'view' => 'commerce_line_item_table|block_2',
   );
-  /* Field: Bestellung: Line items */
+  $handler->display->display_options['fields']['commerce_line_items_1']['delta_offset'] = '0';
+  /* Field: Commerce Order: Line items */
   $handler->display->display_options['fields']['commerce_line_items_2']['id'] = 'commerce_line_items_2';
   $handler->display->display_options['fields']['commerce_line_items_2']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items_2']['field'] = 'commerce_line_items';
-  $handler->display->display_options['fields']['commerce_line_items_2']['label'] = 'Versandkosten';
+  $handler->display->display_options['fields']['commerce_line_items_2']['label'] = 'Versand';
   $handler->display->display_options['fields']['commerce_line_items_2']['settings'] = array(
     'view' => 'commerce_line_item_table|block_3',
   );
   $handler->display->display_options['fields']['commerce_line_items_2']['delta_offset'] = '0';
-  /* Field: Rechnungsdatum zur Sortierung */
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['field'] = 'field_commerce_billy_i_date';
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['ui_name'] = 'Rechnungsdatum zur Sortierung';
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['label'] = '';
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['settings'] = array(
-    'format_type' => 'monat',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_remaining_days' => 0,
+  /* Field: Commerce Order: Line items */
+  $handler->display->display_options['fields']['commerce_line_items_4']['id'] = 'commerce_line_items_4';
+  $handler->display->display_options['fields']['commerce_line_items_4']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_4']['field'] = 'commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_4']['label'] = 'Spende';
+  $handler->display->display_options['fields']['commerce_line_items_4']['settings'] = array(
+    'view' => 'commerce_line_item_table|block_4',
   );
-  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['commerce_line_items_4']['delta_offset'] = '0';
+  /* Field: Commerce Order: Bankbeleg (editable) */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['id'] = 'field_commerce_order_bankbeleg_editable';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['table'] = 'field_data_field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['field'] = 'field_commerce_order_bankbeleg_editable';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['label'] = 'Bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['settings'] = array(
+    'click_to_edit' => 1,
+    'click_to_edit_style' => 'button',
+    'empty_text' => '',
+    'fallback_format' => 'text_default',
+  );
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['widget_type'] = '0';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['suppress_label'] = 1;
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['suppress_description'] = 1;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Commerce Order: Order type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'commerce_order';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'commerce_order' => 'commerce_order',
-  );
   /* Filter criterion: Commerce Order: Order status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'commerce_order';
@@ -607,11 +595,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = array(
     'invoiced' => 'invoiced',
   );
+  $handler->display->display_options['filters']['status']['group'] = 1;
   /* Filter criterion: Global: Combine fields filter */
   $handler->display->display_options['filters']['combine']['id'] = 'combine';
   $handler->display->display_options['filters']['combine']['table'] = 'views';
   $handler->display->display_options['filters']['combine']['field'] = 'combine';
   $handler->display->display_options['filters']['combine']['operator'] = 'word';
+  $handler->display->display_options['filters']['combine']['group'] = 1;
   $handler->display->display_options['filters']['combine']['exposed'] = TRUE;
   $handler->display->display_options['filters']['combine']['expose']['operator_id'] = 'combine_op';
   $handler->display->display_options['filters']['combine']['expose']['label'] = 'Name oder Rechnungsnummer suchen';
@@ -701,13 +691,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnr.';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -726,7 +716,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['exclude'] = TRUE;
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -735,7 +725,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
     'calculation' => FALSE,
   );
-  /* Field: Bestellung: Line items */
+  /* Field: Commerce Order: Line items */
   $handler->display->display_options['fields']['commerce_line_items']['id'] = 'commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items']['field'] = 'commerce_line_items';
@@ -745,7 +735,7 @@ function dunning_views_default_views() {
     'view' => 'commerce_line_item_table|block_2',
   );
   $handler->display->display_options['fields']['commerce_line_items']['delta_offset'] = '0';
-  /* Field: Bestellung: Line items */
+  /* Field: Commerce Order: Line items */
   $handler->display->display_options['fields']['commerce_line_items_1']['id'] = 'commerce_line_items_1';
   $handler->display->display_options['fields']['commerce_line_items_1']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items_1']['field'] = 'commerce_line_items';
@@ -755,7 +745,7 @@ function dunning_views_default_views() {
     'view' => 'commerce_line_item_table|block_1',
   );
   $handler->display->display_options['fields']['commerce_line_items_1']['delta_offset'] = '0';
-  /* Field: Commerce Belegzeile: Spendenbetrag */
+  /* Field: Commerce Line item: Spendenbetrag */
   $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
   $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
   $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
@@ -780,7 +770,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -803,7 +793,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
   $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
   $handler->display->display_options['fields']['flagged']['not'] = 0;
-  /* Field: Bestellung: Bankbeleg */
+  /* Field: Commerce Order: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
@@ -825,7 +815,7 @@ function dunning_views_default_views() {
     'show_remaining_days' => 0,
   );
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Sort criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -1052,13 +1042,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -1074,7 +1064,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -1089,7 +1079,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
   $handler->display->display_options['fields']['order_id']['label'] = 'Bestellnummer';
   $handler->display->display_options['fields']['order_id']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -1103,15 +1093,6 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Rechnungsdatum zur Sortierung */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
@@ -1140,13 +1121,14 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['label'] = 'Status';
-  /* Field: Bestellung: Bankbeleg */
+  /* Field: Commerce Order: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['type'] = 'editable';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['settings'] = array(
-    'click_to_edit' => 0,
+    'click_to_edit' => 1,
+    'click_to_edit_style' => 'button',
     'empty_text' => '',
     'fallback_format' => 'text_default',
   );
@@ -1217,7 +1199,7 @@ function dunning_views_default_views() {
     'commerce_customer_address_name_line' => 'commerce_customer_address_name_line',
     'commerce_order_total' => 'commerce_order_total',
   );
-  /* Filter criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Filter criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -1235,12 +1217,6 @@ function dunning_views_default_views() {
     3 => array(),
   );
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['default_date'] = '-7 days';
-  /* Filter criterion: Flags: Flagged */
-  $handler->display->display_options['filters']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['filters']['flagged']['value'] = '0';
   $handler->display->display_options['path'] = 'admin/buchhaltung/mahnungen';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Mahnungen';
@@ -1268,13 +1244,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnr.';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -1293,7 +1269,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['exclude'] = TRUE;
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -1302,7 +1278,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
     'calculation' => FALSE,
   );
-  /* Field: Commerce Belegzeile: Spendenbetrag */
+  /* Field: Commerce Line item: Spendenbetrag */
   $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
   $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
   $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
@@ -1326,7 +1302,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -1349,7 +1325,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
   $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
   $handler->display->display_options['fields']['flagged']['not'] = 0;
-  /* Field: Bestellung: Bankbeleg */
+  /* Field: Commerce Order: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
@@ -1371,7 +1347,7 @@ function dunning_views_default_views() {
     'show_remaining_days' => 0,
   );
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Sort criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -1395,7 +1371,7 @@ function dunning_views_default_views() {
     'mahnung_2' => 'mahnung_2',
     'gesperrt' => 'gesperrt',
   );
-  /* Filter criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Filter criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -1505,13 +1481,23 @@ function dunning_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Commerce Order: Referenced customer profile */
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['id'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['table'] = 'field_data_commerce_customer_billing';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['field'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['required'] = TRUE;
+  /* Relationship: Commerce Order: Referenced line items */
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['id'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['field'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['label'] = 'Line items';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
-  $handler->display->display_options['fields']['views_bulk_operations']['exclude'] = TRUE;
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '1';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -1532,13 +1518,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -1554,7 +1540,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -1574,7 +1560,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -1588,21 +1574,11 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'Bankbeleg';
-  $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
   /* Field: Rechnungsdatum zur Sortierung */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
@@ -1619,11 +1595,6 @@ function dunning_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Field: Bestellung: Bankbeleg */
-  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
-  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
-  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
-  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Commerce Order: Order type */
@@ -1738,13 +1709,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -1762,7 +1733,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['exclude'] = TRUE;
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -1771,7 +1742,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
     'calculation' => FALSE,
   );
-  /* Field: Commerce Belegzeile: Spendenbetrag */
+  /* Field: Commerce Line item: Spendenbetrag */
   $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
   $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
   $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
@@ -1795,7 +1766,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -1818,7 +1789,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
   $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
   $handler->display->display_options['fields']['flagged']['not'] = 0;
-  /* Field: Bestellung: Bankbeleg */
+  /* Field: Commerce Order: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
@@ -1840,7 +1811,7 @@ function dunning_views_default_views() {
     'show_remaining_days' => 0,
   );
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Sort criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['sorts']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -2005,13 +1976,13 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
-  /* Field: Commerce Kundenprofil: Address - Full name */
+  /* Field: Commerce Customer profile: Address - Full name */
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
   $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
@@ -2027,7 +1998,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
   $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
-  /* Field: Bestellung: Order total */
+  /* Field: Commerce Order: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
@@ -2042,7 +2013,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
   $handler->display->display_options['fields']['order_id']['label'] = 'Bestellnummer';
   $handler->display->display_options['fields']['order_id']['exclude'] = TRUE;
-  /* Field: Bestellung: Rechnungsdatum */
+  /* Field: Commerce Order: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
@@ -2088,12 +2059,21 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['mail']['label'] = 'E-Mail';
   $handler->display->display_options['fields']['mail']['exclude'] = TRUE;
   $handler->display->display_options['fields']['mail']['render_as_link'] = 0;
-  /* Field: Broken/missing handler */
+  /* Field: Commerce Order: Bankbeleg (editable) */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['id'] = 'field_commerce_order_bankbeleg_editable';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['table'] = 'field_data_field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['field'] = 'field_commerce_order_bankbeleg_editable';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['label'] = 'Bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['settings'] = array(
+    'click_to_edit' => 0,
+    'empty_text' => '',
+    'fallback_format' => 'text_default',
+  );
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['widget_type'] = '0';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['suppress_label'] = 1;
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg_editable']['suppress_description'] = 1;
   /* Field: Commerce Order: Order status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
@@ -2164,7 +2144,7 @@ function dunning_views_default_views() {
     'commerce_customer_address_name_line' => 'commerce_customer_address_name_line',
     'commerce_order_total' => 'commerce_order_total',
   );
-  /* Filter criterion: Bestellung: Rechnungsdatum (field_commerce_billy_i_date) */
+  /* Filter criterion: Commerce Order: Rechnungsdatum (field_commerce_billy_i_date) */
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['id'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
@@ -2212,7 +2192,6 @@ function dunning_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('Customer profile referenced by commerce_customer_billing'),
-    t('Bezahlt'),
     t('Line items'),
     t('- Choose an operation -'),
     t('Rechnung als bezahlt markieren'),
@@ -2223,25 +2202,25 @@ function dunning_views_default_views() {
     t('Rechnungsbetrag'),
     t('Bestellnummer'),
     t('Order status'),
-    t('Bezahlt?'),
     t('Bankbeleg'),
+    t('Spendenbetrag'),
     t('Name oder Rechnungsnummer suchen'),
     t('Filtere die Ansicht nach Name oder Rechnungsnummer. Die Eingabe-Taste funktioniert alternativ zum Anwenden-Button'),
     t('Suche'),
     t('Offene Rechnungen'),
     t('In dieser Ansicht werden gestellte Rechnungen angezeigt, die mit Zahlungen abgeglichen werden können.'),
     t('more'),
-    t('<none>'),
-    t('Bildungsm. Anteil'),
     t('SL Anteil'),
+    t('Bildungsm. Anteil'),
+    t('Versand'),
     t('Spende'),
-    t('Versandkosten'),
     t('Datenexport offen'),
     t('Rechnungsnr.'),
     t('Datum'),
     t('Betrag'),
     t('Bildung'),
     t('SL'),
+    t('Bezahlt?'),
     t('Mahnungen'),
     t('Keine Einträge vorhanden'),
     t('<h2>Bravo! Momentan gibt es keine unbezahlten Rechnungen, die überfällig wären!</h2>'),
@@ -2250,7 +2229,6 @@ function dunning_views_default_views() {
     t('Status'),
     t('Rechnungsdatum (field_commerce_billy_i_date)'),
     t('Datenexport Mahnungen'),
-    t('Spendenbetrag'),
     t('Bezahlte Rechnungen'),
     t('In dieser Ansicht werden bezahlte Rechnungen angezeigt.'),
     t('Datenexport bezahlte Rechnungen'),
