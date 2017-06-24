@@ -495,6 +495,8 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['alter']['strip_tags'] = TRUE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['settings'] = array(
     'format_type' => 'ultrakurz',
     'fromto' => 'both',
@@ -594,6 +596,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = array(
     'invoiced' => 'invoiced',
+    'versandt' => 'versandt',
   );
   $handler->display->display_options['filters']['status']['group'] = 1;
   /* Filter criterion: Global: Combine fields filter */
@@ -657,13 +660,26 @@ function dunning_views_default_views() {
 
   /* Display: Datenexport offen */
   $handler = $view->new_display('views_data_export', 'Datenexport offen', 'datenexport');
+  $handler->display->display_options['defaults']['link_display'] = FALSE;
+  $handler->display->display_options['link_display'] = 'offene_rechnungen';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
-  $handler->display->display_options['style_options']['attach_text'] = 'Excel-Datei Exportieren';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_csv';
+  $handler->display->display_options['style_options']['attach_text'] = 'Daten nach Excel exportieren';
   $handler->display->display_options['style_options']['provide_file'] = 1;
-  $handler->display->display_options['style_options']['filename'] = 'Rechnungen_offen_%timestamp-full.xls';
+  $handler->display->display_options['style_options']['filename'] = 'Offene_Rechnungen_INKOTA_webshop_%timestamp-full.csv';
   $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['style_options']['separator'] = ';';
+  $handler->display->display_options['style_options']['quote'] = 1;
+  $handler->display->display_options['style_options']['trim'] = 1;
+  $handler->display->display_options['style_options']['replace_newlines'] = 0;
+  $handler->display->display_options['style_options']['newline_token'] = '1';
+  $handler->display->display_options['style_options']['header'] = 1;
+  $handler->display->display_options['style_options']['keep_html'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -702,6 +718,9 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['label'] = 'Datum';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['alter']['trim_whitespace'] = TRUE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['alter']['strip_tags'] = TRUE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_commerce_billy_i_date']['settings'] = array(
     'format_type' => 'ultrakurz',
     'fromto' => 'both',
@@ -721,6 +740,8 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['label'] = 'Betrag';
+  $handler->display->display_options['fields']['commerce_order_total']['alter']['text'] = '[commerce_order_total-amount]';
+  $handler->display->display_options['fields']['commerce_order_total']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['commerce_order_total']['click_sort_column'] = 'amount';
   $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
     'calculation' => FALSE,
@@ -730,7 +751,12 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_line_items']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items']['field'] = 'commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items']['label'] = 'Bildung';
-  $handler->display->display_options['fields']['commerce_line_items']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items']['alter']['text'] = '[commerce_line_items]';
+  $handler->display->display_options['fields']['commerce_line_items']['alter']['trim_whitespace'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items']['alter']['nl2br'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items']['alter']['strip_tags'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['commerce_line_items']['settings'] = array(
     'view' => 'commerce_line_item_table|block_2',
   );
@@ -740,29 +766,43 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_line_items_1']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items_1']['field'] = 'commerce_line_items';
   $handler->display->display_options['fields']['commerce_line_items_1']['label'] = 'SL';
-  $handler->display->display_options['fields']['commerce_line_items_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_1']['alter']['text'] = '[commerce_line_items_1]';
+  $handler->display->display_options['fields']['commerce_line_items_1']['alter']['trim_whitespace'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_1']['alter']['nl2br'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_1']['alter']['strip_tags'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_1']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['commerce_line_items_1']['settings'] = array(
     'view' => 'commerce_line_item_table|block_1',
   );
   $handler->display->display_options['fields']['commerce_line_items_1']['delta_offset'] = '0';
-  /* Field: Commerce Belegzeile: Spendenbetrag */
-  $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['relationship'] = 'commerce_line_items_line_item_id';
-  $handler->display->display_options['fields']['commerce_donate_amount']['label'] = 'Spende';
-  $handler->display->display_options['fields']['commerce_donate_amount']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['commerce_donate_amount']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['commerce_donate_amount']['settings'] = array(
-    'thousand_separator' => '',
-    'decimal_separator' => ',',
-    'scale' => '2',
-    'prefix_suffix' => 1,
+  /* Field: Bestellung: Line items */
+  $handler->display->display_options['fields']['commerce_line_items_2']['id'] = 'commerce_line_items_2';
+  $handler->display->display_options['fields']['commerce_line_items_2']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_2']['field'] = 'commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_2']['label'] = 'Versand';
+  $handler->display->display_options['fields']['commerce_line_items_2']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_2']['alter']['text'] = '[commerce_line_items_2]';
+  $handler->display->display_options['fields']['commerce_line_items_2']['alter']['trim_whitespace'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_2']['alter']['strip_tags'] = TRUE;
+  $handler->display->display_options['fields']['commerce_line_items_2']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['commerce_line_items_2']['settings'] = array(
+    'view' => 'commerce_line_item_table|block_3',
   );
+  $handler->display->display_options['fields']['commerce_line_items_2']['delta_offset'] = '0';
+  /* Field: Bestellung: Line items */
+  $handler->display->display_options['fields']['commerce_line_items_3']['id'] = 'commerce_line_items_3';
+  $handler->display->display_options['fields']['commerce_line_items_3']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_3']['field'] = 'commerce_line_items';
+  $handler->display->display_options['fields']['commerce_line_items_3']['label'] = 'Spende';
+  $handler->display->display_options['fields']['commerce_line_items_3']['settings'] = array(
+    'view' => 'commerce_line_item_table|block_4',
+  );
+  $handler->display->display_options['fields']['commerce_line_items_3']['delta_offset'] = '0';
   /* Field: Commerce Order: Order ID */
   $handler->display->display_options['fields']['order_id']['id'] = 'order_id';
   $handler->display->display_options['fields']['order_id']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
+  $handler->display->display_options['fields']['order_id']['group_type'] = 'count';
   $handler->display->display_options['fields']['order_id']['label'] = 'Bestellnummer';
   $handler->display->display_options['fields']['order_id']['exclude'] = TRUE;
   /* Field: Commerce Order: Order status */
@@ -784,15 +824,6 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Bestellung: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
@@ -835,6 +866,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = array(
     'invoiced' => 'invoiced',
+    'versandt' => 'versandt',
   );
   /* Filter criterion: Global: Combine fields filter */
   $handler->display->display_options['filters']['combine']['id'] = 'combine';
@@ -1148,6 +1180,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = array(
     'invoiced' => 'invoiced',
+    'versandt' => 'versandt',
     'mahnung_1' => 'mahnung_1',
     'mahnung_2' => 'mahnung_2',
   );
@@ -1216,7 +1249,7 @@ function dunning_views_default_views() {
     2 => array(),
     3 => array(),
   );
-  $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['default_date'] = '-7 days';
+  $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['default_date'] = '-42 days';
   $handler->display->display_options['path'] = 'admin/buchhaltung/mahnungen';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Mahnungen';
@@ -1233,11 +1266,16 @@ function dunning_views_default_views() {
   $handler->display->display_options['link_display'] = 'mahnungen';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
-  $handler->display->display_options['style_options']['attach_text'] = 'Excel-Datei Exportieren';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_csv';
   $handler->display->display_options['style_options']['provide_file'] = 1;
-  $handler->display->display_options['style_options']['filename'] = 'Rechnungen_Mahnungen_%timestamp-full.xls';
   $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['style_options']['separator'] = ';';
+  $handler->display->display_options['style_options']['quote'] = 1;
+  $handler->display->display_options['style_options']['trim'] = 1;
+  $handler->display->display_options['style_options']['replace_newlines'] = 0;
+  $handler->display->display_options['style_options']['newline_token'] = '1';
+  $handler->display->display_options['style_options']['header'] = 1;
+  $handler->display->display_options['style_options']['keep_html'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Commerce Order: Order number */
   $handler->display->display_options['fields']['order_number']['id'] = 'order_number';
@@ -1316,15 +1354,6 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Bestellung: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
@@ -1367,6 +1396,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = array(
     'invoiced' => 'invoiced',
+    'versandt' => 'versandt',
     'mahnung_1' => 'mahnung_1',
     'mahnung_2' => 'mahnung_2',
     'gesperrt' => 'gesperrt',
@@ -1376,7 +1406,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['table'] = 'field_data_field_commerce_billy_i_date';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['field'] = 'field_commerce_billy_i_date_value';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['operator'] = '<=';
-  $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['default_date'] = '-7 days';
+  $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['default_date'] = '-42 days';
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['year_range'] = '-1:+1';
   $handler->display->display_options['path'] = 'admin/zahlungen/mahnungen/export';
   $handler->display->display_options['displays'] = array(
@@ -1492,6 +1522,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['table'] = 'field_data_commerce_line_items';
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['field'] = 'commerce_line_items_line_item_id';
   $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['label'] = 'Line items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -1574,11 +1605,10 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Global: Custom text */
-  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['table'] = 'views';
-  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = 'Bankbeleg';
+  /* Field: Bestellung: Bankbeleg */
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
   /* Field: Rechnungsdatum zur Sortierung */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
@@ -1677,11 +1707,29 @@ function dunning_views_default_views() {
   $handler->display->display_options['link_display'] = 'bezahlte_rechnungen';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
-  $handler->display->display_options['style_options']['attach_text'] = 'Excel-Datei Exportieren';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_csv';
   $handler->display->display_options['style_options']['provide_file'] = 1;
-  $handler->display->display_options['style_options']['filename'] = 'Bezahlte_Rechnungen_%timestamp-full.xls';
+  $handler->display->display_options['style_options']['filename'] = '%view_%timestamp-full.csv';
   $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['style_options']['separator'] = ';';
+  $handler->display->display_options['style_options']['quote'] = 1;
+  $handler->display->display_options['style_options']['trim'] = 1;
+  $handler->display->display_options['style_options']['replace_newlines'] = 0;
+  $handler->display->display_options['style_options']['newline_token'] = '1';
+  $handler->display->display_options['style_options']['header'] = 1;
+  $handler->display->display_options['style_options']['keep_html'] = 0;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Bestellung: Referenced customer profile */
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['id'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['table'] = 'field_data_commerce_customer_billing';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['field'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['required'] = TRUE;
+  /* Relationship: Bestellung: Referenced line items */
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['id'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['field'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['label'] = 'Line items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -1727,12 +1775,6 @@ function dunning_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Field: Commerce Order: Invoice PDF */
-  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['id'] = 'commerce_billy_pdf_invoice_link';
-  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
-  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
-  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
-  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['exclude'] = TRUE;
   /* Field: Bestellung: Order total */
   $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
   $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
@@ -1742,30 +1784,6 @@ function dunning_views_default_views() {
   $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
     'calculation' => FALSE,
   );
-  /* Field: Commerce Belegzeile: Spendenbetrag */
-  $handler->display->display_options['fields']['commerce_donate_amount']['id'] = 'commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['table'] = 'field_data_commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['field'] = 'commerce_donate_amount';
-  $handler->display->display_options['fields']['commerce_donate_amount']['relationship'] = 'commerce_line_items_line_item_id';
-  $handler->display->display_options['fields']['commerce_donate_amount']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['commerce_donate_amount']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['commerce_donate_amount']['settings'] = array(
-    'thousand_separator' => '',
-    'decimal_separator' => ',',
-    'scale' => '2',
-    'prefix_suffix' => 1,
-  );
-  /* Field: Commerce Order: Order ID */
-  $handler->display->display_options['fields']['order_id']['id'] = 'order_id';
-  $handler->display->display_options['fields']['order_id']['table'] = 'commerce_order';
-  $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
-  $handler->display->display_options['fields']['order_id']['label'] = 'Bestellnummer';
-  $handler->display->display_options['fields']['order_id']['exclude'] = TRUE;
-  /* Field: Commerce Order: Order status */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['exclude'] = TRUE;
   /* Field: Bestellung: Rechnungsdatum */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
@@ -1780,15 +1798,6 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Bestellung: Bankbeleg */
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
   $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
@@ -1948,7 +1957,7 @@ function dunning_views_default_views() {
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['label'] = 'Keine Einträge vorhanden';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<h2>Bravo! Momentan gibt es keine unbezahlten Rechnungen, die überfällig wären!</h2>';
+  $handler->display->display_options['empty']['area']['content'] = '<h2>Bravo! Momentan keine gesperrten NutzerInnen vorhanden!</h2>';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Commerce Order */
@@ -2027,15 +2036,6 @@ function dunning_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Bezahlt?';
-  $handler->display->display_options['fields']['flagged']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['flagged']['type'] = 'unicode-yes-no';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Rechnungsdatum zur Sortierung */
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
   $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
@@ -2162,12 +2162,6 @@ function dunning_views_default_views() {
     3 => array(),
   );
   $handler->display->display_options['filters']['field_commerce_billy_i_date_value']['default_date'] = '-7 days';
-  /* Filter criterion: Flags: Flagged */
-  $handler->display->display_options['filters']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['filters']['flagged']['value'] = '0';
   $handler->display->display_options['path'] = 'admin/buchhaltung/gesperrt';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'gesperrte NutzerInnen';
@@ -2175,6 +2169,268 @@ function dunning_views_default_views() {
   $handler->display->display_options['menu']['name'] = 'menu-buchhaltungsmenu';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Stornierte Rechnungen */
+  $handler = $view->new_display('page', 'Stornierte Rechnungen', 'page_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Bezahlte Rechnungen';
+  $handler->display->display_options['display_description'] = 'In dieser Ansicht werden stornierte Rechnungen angezeigt.';
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'order_number' => 'order_number',
+    'field_commerce_billy_i_date' => 'field_commerce_billy_i_date',
+    'commerce_customer_billing' => 'commerce_customer_billing',
+    'commerce_billy_pdf_invoice_link' => 'commerce_billy_pdf_invoice_link',
+    'commerce_order_total' => 'commerce_order_total',
+    'order_id' => 'order_id',
+    'status' => 'status',
+    'field_commerce_billy_i_date_1' => 'field_commerce_billy_i_date_1',
+    'status_1' => 'status_1',
+  );
+  $handler->display->display_options['style_options']['default'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'order_number' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_commerce_billy_i_date' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'commerce_customer_billing' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'commerce_billy_pdf_invoice_link' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'commerce_order_total' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'order_id' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_commerce_billy_i_date_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'status_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['sticky'] = TRUE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Bestellung: Referenced customer profile */
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['id'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['table'] = 'field_data_commerce_customer_billing';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['field'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['required'] = TRUE;
+  /* Relationship: Bestellung: Referenced line items */
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['id'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['field'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['label'] = 'Line items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['required'] = TRUE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Commerce Order: Order number */
+  $handler->display->display_options['fields']['order_number']['id'] = 'order_number';
+  $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
+  $handler->display->display_options['fields']['order_number']['label'] = 'Rechnungsnummer';
+  /* Field: Commerce Kundenprofil: Address - Full name */
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
+  /* Field: Bestellung: Rechnungsdatum */
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['id'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['table'] = 'field_data_field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['field'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+  );
+  /* Field: Commerce Order: Invoice PDF */
+  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['id'] = 'commerce_billy_pdf_invoice_link';
+  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['table'] = 'views_entity_commerce_order';
+  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['field'] = 'commerce_billy_pdf_invoice_link';
+  $handler->display->display_options['fields']['commerce_billy_pdf_invoice_link']['label'] = 'Rechnung PDF';
+  /* Field: Bestellung: Order total */
+  $handler->display->display_options['fields']['commerce_order_total']['id'] = 'commerce_order_total';
+  $handler->display->display_options['fields']['commerce_order_total']['table'] = 'field_data_commerce_order_total';
+  $handler->display->display_options['fields']['commerce_order_total']['field'] = 'commerce_order_total';
+  $handler->display->display_options['fields']['commerce_order_total']['label'] = 'Rechnungsbetrag';
+  $handler->display->display_options['fields']['commerce_order_total']['click_sort_column'] = 'amount';
+  $handler->display->display_options['fields']['commerce_order_total']['settings'] = array(
+    'calculation' => FALSE,
+  );
+  /* Field: Commerce Order: Order ID */
+  $handler->display->display_options['fields']['order_id']['id'] = 'order_id';
+  $handler->display->display_options['fields']['order_id']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['order_id']['field'] = 'order_id';
+  $handler->display->display_options['fields']['order_id']['label'] = 'Bestellnummer';
+  $handler->display->display_options['fields']['order_id']['exclude'] = TRUE;
+  /* Field: Commerce Order: Order status */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['exclude'] = TRUE;
+  /* Field: Bestellung: Rechnungsdatum */
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['id'] = 'field_commerce_billy_i_date_1';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['table'] = 'field_data_field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['field'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['label'] = '';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_1']['settings'] = array(
+    'format_type' => 'monat',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+  );
+  /* Field: Bestellung: Bankbeleg */
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['id'] = 'field_commerce_order_bankbeleg';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['table'] = 'field_data_field_commerce_order_bankbeleg';
+  $handler->display->display_options['fields']['field_commerce_order_bankbeleg']['field'] = 'field_commerce_order_bankbeleg';
+  /* Field: Rechnungsdatum zur Sortierung */
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['id'] = 'field_commerce_billy_i_date_2';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['table'] = 'field_data_field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['field'] = 'field_commerce_billy_i_date';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['ui_name'] = 'Rechnungsdatum zur Sortierung';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['label'] = '';
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_commerce_billy_i_date_2']['settings'] = array(
+    'format_type' => 'monat',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Commerce Order: Order type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'commerce_order';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'commerce_order' => 'commerce_order',
+  );
+  /* Filter criterion: Commerce Order: Order status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'commerce_order';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = array(
+    'canceled' => 'canceled',
+  );
+  /* Filter criterion: Global: Combine fields filter */
+  $handler->display->display_options['filters']['combine']['id'] = 'combine';
+  $handler->display->display_options['filters']['combine']['table'] = 'views';
+  $handler->display->display_options['filters']['combine']['field'] = 'combine';
+  $handler->display->display_options['filters']['combine']['operator'] = 'word';
+  $handler->display->display_options['filters']['combine']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['combine']['expose']['operator_id'] = 'combine_op';
+  $handler->display->display_options['filters']['combine']['expose']['label'] = 'Name oder Rechnungsnummer suchen';
+  $handler->display->display_options['filters']['combine']['expose']['description'] = 'Filtere die Ansicht nach Name oder Rechnungsnummer. Die Eingabe-Taste funktioniert alternativ zum Anwenden-Button';
+  $handler->display->display_options['filters']['combine']['expose']['operator'] = 'combine_op';
+  $handler->display->display_options['filters']['combine']['expose']['identifier'] = 'combine';
+  $handler->display->display_options['filters']['combine']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    4 => 0,
+    3 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['combine']['group_info']['label'] = 'Suche';
+  $handler->display->display_options['filters']['combine']['group_info']['identifier'] = 'combine';
+  $handler->display->display_options['filters']['combine']['group_info']['widget'] = 'radios';
+  $handler->display->display_options['filters']['combine']['group_info']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['combine']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '',
+      'operator' => 'contains',
+      'value' => '',
+    ),
+    2 => array(
+      'title' => '',
+      'operator' => 'contains',
+      'value' => '',
+    ),
+    3 => array(
+      'title' => '',
+      'operator' => 'contains',
+      'value' => '',
+    ),
+  );
+  $handler->display->display_options['filters']['combine']['fields'] = array(
+    'order_number' => 'order_number',
+    'commerce_customer_address_name_line' => 'commerce_customer_address_name_line',
+    'commerce_order_total' => 'commerce_order_total',
+  );
+  $handler->display->display_options['path'] = 'admin/buchhaltung/storno';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Stornierte Rechnungen';
+  $handler->display->display_options['menu']['weight'] = '12';
+  $handler->display->display_options['menu']['name'] = 'menu-buchhaltungsmenu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'tab';
+  $handler->display->display_options['tab_options']['title'] = 'Buchhaltung';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'menu-admin-menu';
   $translatables['buchhaltung'] = array(
     t('Master'),
     t('Gestellte Rechnungen'),
@@ -2218,9 +2474,12 @@ function dunning_views_default_views() {
     t('Rechnungsnr.'),
     t('Datum'),
     t('Betrag'),
+    t('[commerce_order_total-amount]'),
     t('Bildung'),
+    t('[commerce_line_items]'),
     t('SL'),
-    t('Bezahlt?'),
+    t('[commerce_line_items_1]'),
+    t('[commerce_line_items_2]'),
     t('Mahnungen'),
     t('Keine Einträge vorhanden'),
     t('<h2>Bravo! Momentan gibt es keine unbezahlten Rechnungen, die überfällig wären!</h2>'),
@@ -2234,6 +2493,9 @@ function dunning_views_default_views() {
     t('Datenexport bezahlte Rechnungen'),
     t('bezahlte Rechnungen'),
     t('gesperrte NutzerInnen'),
+    t('<h2>Bravo! Momentan keine gesperrten NutzerInnen vorhanden!</h2>'),
+    t('Stornierte Rechnungen'),
+    t('In dieser Ansicht werden stornierte Rechnungen angezeigt.'),
   );
   $export['buchhaltung'] = $view;
 
